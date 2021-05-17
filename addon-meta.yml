@@ -1,0 +1,4 @@
+name: OmniCC
+description: README.md
+version: 1
+directories: ["OmniCC", "OmniCC_Config"]
