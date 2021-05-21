@@ -1,4 +1,5 @@
 name: OmniCC
 description: README.md
 version: 1
+category: 18
 directories: ["OmniCC", "OmniCC_Config"]
