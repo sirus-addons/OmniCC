@@ -1,8 +1,8 @@
 ## Interface: 30300
 ## Title: OmniCC
-## Notes: |@Version: 1@|Cooldown count for everything
+## Notes: |@Version: 1@|Показывает перезарядку способностей
 ## Notes-koKR: 모든 것을 위한 쿨다운 카운트
-## Author: Tuller
+## Author: Tuller, Мастер(фикс локализации)
 ## Version: 3.0.4
 ## SavedVariables: OmniCCGlobalSettings
 embeds.xml
