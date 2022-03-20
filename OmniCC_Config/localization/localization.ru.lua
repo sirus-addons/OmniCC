@@ -1,6 +1,4 @@
-﻿--[[
-	OmniCC configuration interface localization - Russian
---]]
+﻿--OmniCC configuration interface localization - Russian
 
 local L = OMNICC_LOCALS
 
@@ -8,18 +6,20 @@ L.GeneralSettings = "Отображение"
 L.GeneralSettingsTitle = "Общие настройки"
 
 L.FontSettings = "Стиль текста"
-L.FontSettingsTitle = "Внешний вид"
+L.FontSettingsTitle = "Настройка внешнего вида"
 
 L.FilterSettings = "Фильтр"
 L.FilterSettingsTitle = "Фильтрация по названию фрейма"
 
 L.UseWhitelist = "Отображать текст только в зарегистрированных фреймах"
-L.UseBlacklist = "Отображать текст только на фреймах, не включенных в черный список"
+L.UseBlacklist = "Включить"
 L.Blacklist = "Черный список"
 
 L.Font = "Шрифт"
 L.FontSize = "Размер шрифта"
 L.FontOutline = "Контур шрифта"
+
+L.TimerCustom = "Свой отрезок времени (0-30)"
 
 L.Outline_NONE = NONE
 L.Outline_OUTLINE = "Тонкий"
@@ -39,7 +39,7 @@ L.MMSSDuration = "Мин. длительность для отображения
 L.TenthsDuration = "Мин. длительность для отображения десятых долей секунд"
 
 L.ColorAndScale = "Цвет и размер текста, на разных временных отрезках"
-L.Color_soon = "Скоро истекает"
+L.Color_soon = "Свой таймер (настройка ниже)"
 L.Color_seconds = "Меньше минуты"
 L.Color_minutes = "Меньше часа"
 L.Color_hours = "Больше часа"
@@ -81,7 +81,7 @@ L.MinEffectDurationTip =
 [[Определяет, как долго
 должна длиться перезарядка,
 чтобы показать эффект завершения
-(например, пульс/блеск).]]
+(пульс/свечение).]]
 
 L.MMSSDurationTip =
 [[Определяет пороговое
@@ -97,6 +97,8 @@ L.FontSizeTip =
 
 L.FontOutlineTip =
 [[Управляет толщиной контура вокруг текста.]]
+
+L.CustomTimerTip = "Настроить свой отрезок времени, для изменения цвета и размера текста.\nПРИМЕЧАНИЕ: Если выбрать 'Никогда', применятся настройки 'Меньше минуты'."
 
 L.UseBlacklistTip =
 [[Нажмите, чтобы переключиться на режим

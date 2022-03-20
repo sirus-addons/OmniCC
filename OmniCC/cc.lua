@@ -17,10 +17,10 @@ local OmniCC = OmniCC
 --constants!
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for formatting text
-local DAYISH, HOURISH, MINUTEHALFISH, MINUTEISH, SOONISH = 3600 * 23.5, 60 * 59.5, 89.5, 59.5, 5.5 --used for formatting text at transition points
+local DAYISH, HOURISH, MINUTEHALFISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 89.5, 59.5 --used for formatting text at transition points
+local SOONISH = {}
 local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 local PADDING = 0 --amount of spacing between the timer text and the rest of the cooldown
-
 --local bindings!
 local floor = math.floor
 local min = math.min
@@ -209,7 +209,7 @@ function Timer:GetTimeText(s)
 	local tenths = OmniCC:GetTenthsDuration()
 	if s < tenths then
 		return format('%.1f', s), (s*10 - floor(s*10)) / 10
-	--format text as seconds when at 90 seconds or below
+		--format text as seconds when at 90 seconds or below
 	elseif s < MINUTEISH then
 		local seconds = round(s)
 
@@ -300,6 +300,12 @@ function Timer:ForAllShownCooldowns(f, ...)
 	end
 end
 
+function Timer:ForCustomTimer(value)
+	if value ~= 0 then
+		value = value + 0.5
+	end
+	SOONISH = value
+end
 
 --[[
 	cooldown display

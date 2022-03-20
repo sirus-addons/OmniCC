@@ -94,6 +94,7 @@ end
 
 function OmniCC:GetDefaults()
 	return {
+		CustomTimer = 5.5,
 		showCooldownModels = true,
 		useBlacklist = false,
 		blacklist = {},
@@ -512,4 +513,14 @@ function OmniCC:CreateClass(...)
 	DisableAddOn('OmniCC_Pulse')
 	DisableAddOn('OmniCC_Shine')
 	return LibStub('Classy-1.0'):New(...)
+end
+
+--default value for customtimer
+function OmniCC:SetCustomTimer(value)
+	self:GetDB().CustomTimer = value
+	self.Timer:ForCustomTimer(value)
+end
+
+function OmniCC:GetCustomTimer()
+	return self:GetDB().CustomTimer
 end

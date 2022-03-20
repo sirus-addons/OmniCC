@@ -2,7 +2,7 @@
 ## Title: OmniCC Config
 ## Notes: |@Version: 1@|Основные настройки
 ## Notes-koKR: OmniCC의 설정 메뉴
-## Author: Tuller, Мастер(фикс локализации)
+## Author: Tuller, Master-f1 (перевёл на русский)
 ## Dependencies: OmniCC
 ## LoadOnDemand: 1
 embeds.xml
