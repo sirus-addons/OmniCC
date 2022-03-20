@@ -1,9 +1,9 @@
 ## Interface: 30300
 ## Title: OmniCC
-## Notes: |@Version: 1@|Показывает перезарядку способностей
-## Notes-koKR: 모든 것을 위한 쿨다운 카운트
-## Author: Tuller, Мастер(фикс локализации)
-## Version: 3.0.4
+## Notes: |@Version: 1@|Shows ability cooldowns
+## Notes-ruRU: |@Version: 1@|Показывает перезарядку способностей
+## Author: Tuller, Master-f1 (перевёл на русский)
+## Version: 3.0.5
 ## SavedVariables: OmniCCGlobalSettings
 embeds.xml
 localization.xml

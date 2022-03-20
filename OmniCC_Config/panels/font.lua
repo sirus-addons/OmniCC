@@ -31,13 +31,37 @@ function FontOptions:AddWidgets()
 
 	--add font outline picker
 	local outlinePicker = self:CreateFontOutlinePicker()
-	outlinePicker:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 16, 10)
+	outlinePicker:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 336, 10)
 	outlinePicker:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -16, 10)
 
 	--add font size slider
 	local fontSize = self:CreateFontSizeSlider()
 	fontSize:SetPoint('BOTTOMLEFT', outlinePicker, 'TOPLEFT', 0, 20)
 	fontSize:SetPoint('BOTTOMRIGHT', outlinePicker, 'TOPRIGHT', 0, 20)
+
+	--add customtimer slider
+	local customTimer = self:CreateCustomTimerSlider()
+	customTimer:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 16, 47)
+	customTimer:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -336, 10)
+
+end
+
+function FontOptions:CreateCustomTimerSlider()
+	local s = self:NewSlider(L.TimerCustom, 0, 30, 1)
+	s.SetSavedValue = function(self, value)
+		OmniCC:SetCustomTimer(value)
+	end
+	s.GetSavedValue = function(self)
+		return OmniCC:GetCustomTimer()
+	end
+	s.GetFormattedText = function(self, value)
+		if value > 0 then
+			return SECONDS_ABBR:format(value)
+		end
+		return NEVER
+	end
+	s.tooltip = L.CustomTimerTip
+	return s
 end
 
 
