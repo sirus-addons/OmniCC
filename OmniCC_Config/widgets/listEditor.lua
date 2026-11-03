@@ -354,16 +354,16 @@ function ListEditor:UpdateAddRemoveButtons()
 	local noText = editFrame.editBox:GetText():match('^%s*$')
 
 	local addEnabled = not(noText) and self:IsAddButtonEnabled()
-	editFrame.addButton:Enable(addEnabled)
+	editFrame.addButton:SetEnabled(addEnabled)
 	editFrame.addButton:GetNormalTexture():SetDesaturated(not addEnabled)
 	editFrame.addButton:GetHighlightTexture():SetDesaturated(not addEnabled)
 	editFrame.addButton:GetPushedTexture():SetDesaturated(not addEnabled)
 
 	local removeEnabled = not(noText) and self:IsRemoveButtonEnabled()
-	editFrame.removeButton:Enable(removeEnabled)
+	editFrame.removeButton:SetEnabled(removeEnabled)
 	editFrame.removeButton:GetNormalTexture():SetDesaturated(not removeEnabled)
-	editFrame.removeButton:GetHighlightTexture():SetDesaturated(not addEnabled)
-	editFrame.removeButton:GetPushedTexture():SetDesaturated(not addEnabled)
+	editFrame.removeButton:GetHighlightTexture():SetDesaturated(not removeEnabled)
+	editFrame.removeButton:GetPushedTexture():SetDesaturated(not removeEnabled)
 end
 
 function ListEditor:OnAddItem()
