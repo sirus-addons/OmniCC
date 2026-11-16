@@ -94,7 +94,7 @@ do
 			return
 		end
 
-		local icon = frame.icon
+		local icon = frame.icon or frame.Icon
 		if icon and icon.GetTexture then
 			return icon
 		end

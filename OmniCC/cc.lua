@@ -20,6 +20,10 @@ local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for formatting text
 local DAYISH, HOURISH, MINUTEHALFISH, MINUTEISH, SOONISH = 3600 * 23.5, 60 * 59.5, 89.5, 59.5, 5.5 --used for formatting text at transition points
 local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 local PADDING = 0 --amount of spacing between the timer text and the rest of the cooldown
+local DAY_SUFFIX, HOUR_SUFFIX, MINUTE_SUFFIX = 'd', 'h', 'm'
+if GetLocale() == 'ruRU' then
+	DAY_SUFFIX, HOUR_SUFFIX, MINUTE_SUFFIX = 'д', 'ч', 'м'
+end
 
 --local bindings!
 local floor = math.floor
@@ -34,6 +38,8 @@ local GetTime = GetTime
 
 local Timer = Classy:New('Frame'); Timer:Hide(); OmniCC.Timer = Timer
 local timers = {}
+local hooked = setmetatable({}, {__mode = 'k'})
+local hideNumbers = setmetatable({}, {__mode = 'k'})
 
 --[[ Constructorish ]]--
 
@@ -101,6 +107,7 @@ function Timer:Stop()
 	self.nextUpdate = nil
 
 	self:Hide()
+	self:UpdateNativeText()
 	return self
 end
 
@@ -159,11 +166,12 @@ function Timer:UpdateText(forceStyleUpdate)
 				self.textStyle = period
 				self.text:SetTextColor(OmniCC:GetPeriodColor(period))
 				self:SetScale(OmniCC:GetPeriodScale(period))
-				self.textStyle = textStyle
 			end
 
 			self.nextUpdate = nextUpdate
 		end
+
+		self:UpdateNativeText()
 	else
 		--if the timer was long enough to, and text is still visible
 		--then trigger a finish effect
@@ -181,6 +189,20 @@ function Timer:UpdateShown()
 		self:Show()
 	else
 		self:Hide()
+	end
+
+	self:UpdateNativeText()
+	return self
+end
+
+function Timer:UpdateNativeText()
+	local native = self.cooldown.CooldownText
+	if native and native.Text then
+		if self:IsShown() and self.text:IsShown() then
+			native.Text:Hide()
+		else
+			native.Text:Show()
+		end
 	end
 
 	return self
@@ -230,15 +252,15 @@ function Timer:GetTimeText(s)
 	--format text as minutes when below an hour
 	elseif s < HOURISH then
 		local minutes = round(s/MINUTE)
-		return minutes .. 'm', minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+		return minutes .. MINUTE_SUFFIX, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
 	--format text as hours when below a day
 	elseif s < DAYISH then
 		local hours = round(s/HOUR)
-		return hours .. 'h', hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
+		return hours .. HOUR_SUFFIX, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
 	--format text as days
 	else
 		local days = round(s/DAY)
-		return days .. 'd', days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
+		return days .. DAY_SUFFIX, days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
 	end
 end
 
@@ -261,6 +283,10 @@ function Timer:ShouldShow()
 
 	--the cooldown of the timer shouldn't be blacklisted
 	if OmniCC:IsBlacklisted(self.cooldown) then
+		return false
+	end
+
+	if hideNumbers[self.cooldown] then
 		return false
 	end
 
@@ -344,7 +370,7 @@ local function cooldown_Init(self)
 	self:HookScript('OnShow', cooldown_OnShow)
 	self:HookScript('OnHide', cooldown_OnHide)
 	self:HookScript('OnSizeChanged', cooldown_OnSizeChanged)
-	self.omnicc = true
+	hooked[self] = true
 
 	return self
 end
@@ -354,11 +380,15 @@ local function cooldown_OnSetCooldown(self, start, duration)
 
 	--don't display cooldown info if the timer is blacklisted
 	if OmniCC:IsBlacklisted(self) then
+		local timer = Timer:Get(self)
+		if timer then
+			timer:Stop()
+		end
 		return
 	end
 
 	--create timer if it does not exist yet
-	if(not self.omnicc) then
+	if(not hooked[self]) then
 		cooldown_Init(self)
 	end
 
@@ -377,7 +407,22 @@ local function cooldown_OnSetCooldown(self, start, duration)
 	end
 end
 
-hooksecurefunc(getmetatable(ActionButton1Cooldown).__index, 'SetCooldown', cooldown_OnSetCooldown)
+local function cooldown_OnSetHideCountdownNumbers(self, hide)
+	hideNumbers[self] = hide and true or nil
+
+	local timer = Timer:Get(self)
+	if timer then
+		timer:UpdateShown()
+	end
+end
+
+local cooldownMeta = getmetatable(ActionButton1Cooldown).__index
+
+hooksecurefunc(cooldownMeta, 'SetCooldown', cooldown_OnSetCooldown)
+
+if cooldownMeta.SetHideCountdownNumbers then
+	hooksecurefunc(cooldownMeta, 'SetHideCountdownNumbers', cooldown_OnSetHideCountdownNumbers)
+end
 
 --bugfix: force update timers when entering an arena
 do
